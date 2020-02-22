@@ -4,6 +4,7 @@
 
 * Scripts
     * https://github.com/svetasmirnova/mysql-scripts
+    * https://github.com/datacharmer/test_db
 
 ### PostgreSQL
 

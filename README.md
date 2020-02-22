@@ -5,6 +5,7 @@
 * Scripts
     * https://github.com/svetasmirnova/mysql-scripts
     * https://github.com/datacharmer/test_db
+    * https://github.com/google/mysql/tree/master/scripts
 
 ### PostgreSQL
 

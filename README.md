@@ -1,13 +1,18 @@
 # awesome-dba
 
 ### MySQL
+* https://github.com/mysql/mysql-server
 
 * Scripts
     * https://github.com/svetasmirnova/mysql-scripts
     * https://github.com/datacharmer/test_db
     * https://github.com/google/mysql/tree/master/scripts
 
+* Awesome Lists
+    * https://github.com/shlomi-noach/awesome-mysql
+
 ### PostgreSQL
+* https://github.com/postgres/postgres
 
 * Scripts
     * https://github.com/JohnArchieMckown/PostgreSQL-DBA-tools/

@@ -1,0 +1,408 @@
+DROP database IF EXISTS pgaudit;
+NOTICE:  database "pgaudit" does not exist, skipping
+CREATE database pgaudit;
+\c pgaudit;
+\set VERBOSITY terse
+-- Create pgaudit extension
+CREATE EXTENSION IF NOT EXISTS pgaudit;
+-- Make sure events don't get logged twice when session logging
+SET pgaudit.log = 'all';
+SET pgaudit.log_client = ON;
+SET pgaudit.log_level = 'notice';
+NOTICE:  AUDIT: SESSION,3,1,MISC,SET,,,SET pgaudit.log_level = 'notice';,<not logged>
+--
+-- Cypher Query Language - DDL
+--
+-- setup
+CREATE ROLE graph_role_0 SUPERUSER;
+NOTICE:  AUDIT: SESSION,4,1,ROLE,CREATE ROLE,,,CREATE ROLE graph_role_0 SUPERUSER;,<not logged>
+SET ROLE graph_role_0;
+NOTICE:  AUDIT: SESSION,5,1,MISC,SET,,,SET ROLE graph_role_0;,<not logged>
+--
+-- CREATE GRAPH
+--
+CREATE GRAPH IF NOT EXISTS graph_0;
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE SCHEMA,SCHEMA,graph_0,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_0.ag_label_seq,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_0.ag_vertex_id_seq,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE TABLE,TABLE,graph_0.ag_vertex,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE INDEX,INDEX,graph_0.ag_vertex_pkey,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_0.ag_vertex_id_seq,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,COMMENT,TABLE,graph_0.ag_vertex,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_0.ag_edge_id_seq,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE TABLE,TABLE,graph_0.ag_edge,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE INDEX,INDEX,graph_0.ag_edge_id_idx,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE INDEX,INDEX,graph_0.ag_edge_start_idx,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,CREATE INDEX,INDEX,graph_0.ag_edge_end_idx,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_0.ag_edge_id_seq,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+NOTICE:  AUDIT: SESSION,6,1,DDL,COMMENT,TABLE,graph_0.ag_edge,CREATE GRAPH IF NOT EXISTS graph_0;,<not logged>
+SET graph_path TO graph_0;
+NOTICE:  AUDIT: SESSION,7,1,MISC,SET,,,SET graph_path TO graph_0;,<not logged>
+SHOW graph_path;
+NOTICE:  AUDIT: SESSION,8,1,MISC,SHOW,,,SHOW graph_path;,<not logged>
+ graph_path 
+------------
+ graph_0
+(1 row)
+
+--
+-- ALTER GRAPH
+--
+CREATE ROLE temp;
+NOTICE:  AUDIT: SESSION,9,1,ROLE,CREATE ROLE,,,CREATE ROLE temp;,<not logged>
+ALTER GRAPH graph_0 RENAME TO graph_00;
+NOTICE:  AUDIT: SESSION,10,1,DDL,ALTER GRAPH,,,ALTER GRAPH graph_0 RENAME TO graph_00;,<not logged>
+--
+-- CREATE label
+--
+CREATE VLABEL v0;
+NOTICE:  AUDIT: SESSION,11,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.v0_id_seq,CREATE VLABEL v0;,<not logged>
+NOTICE:  AUDIT: SESSION,11,1,DDL,CREATE TABLE,TABLE,graph_00.v0,CREATE VLABEL v0;,<not logged>
+NOTICE:  AUDIT: SESSION,11,1,DDL,CREATE INDEX,INDEX,graph_00.v0_pkey,CREATE VLABEL v0;,<not logged>
+NOTICE:  AUDIT: SESSION,11,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.v0_id_seq,CREATE VLABEL v0;,<not logged>
+NOTICE:  AUDIT: SESSION,11,1,DDL,COMMENT,TABLE,graph_00.v0,CREATE VLABEL v0;,<not logged>
+CREATE VLABEL v00 INHERITS (v0);
+NOTICE:  AUDIT: SESSION,12,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.v00_id_seq,CREATE VLABEL v00 INHERITS (v0);,<not logged>
+NOTICE:  AUDIT: SESSION,12,1,DDL,CREATE TABLE,TABLE,graph_00.v00,CREATE VLABEL v00 INHERITS (v0);,<not logged>
+NOTICE:  AUDIT: SESSION,12,1,DDL,CREATE INDEX,INDEX,graph_00.v00_pkey,CREATE VLABEL v00 INHERITS (v0);,<not logged>
+NOTICE:  AUDIT: SESSION,12,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.v00_id_seq,CREATE VLABEL v00 INHERITS (v0);,<not logged>
+NOTICE:  AUDIT: SESSION,12,1,DDL,COMMENT,TABLE,graph_00.v00,CREATE VLABEL v00 INHERITS (v0);,<not logged>
+CREATE ELABEL e0;
+NOTICE:  AUDIT: SESSION,13,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.e0_id_seq,CREATE ELABEL e0;,<not logged>
+NOTICE:  AUDIT: SESSION,13,1,DDL,CREATE TABLE,TABLE,graph_00.e0,CREATE ELABEL e0;,<not logged>
+NOTICE:  AUDIT: SESSION,13,1,DDL,CREATE INDEX,INDEX,graph_00.e0_id_idx,CREATE ELABEL e0;,<not logged>
+NOTICE:  AUDIT: SESSION,13,1,DDL,CREATE INDEX,INDEX,graph_00.e0_start_idx,CREATE ELABEL e0;,<not logged>
+NOTICE:  AUDIT: SESSION,13,1,DDL,CREATE INDEX,INDEX,graph_00.e0_end_idx,CREATE ELABEL e0;,<not logged>
+NOTICE:  AUDIT: SESSION,13,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.e0_id_seq,CREATE ELABEL e0;,<not logged>
+NOTICE:  AUDIT: SESSION,13,1,DDL,COMMENT,TABLE,graph_00.e0,CREATE ELABEL e0;,<not logged>
+CREATE ELABEL e01 INHERITS (e0);
+NOTICE:  AUDIT: SESSION,14,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.e01_id_seq,CREATE ELABEL e01 INHERITS (e0);,<not logged>
+NOTICE:  AUDIT: SESSION,14,1,DDL,CREATE TABLE,TABLE,graph_00.e01,CREATE ELABEL e01 INHERITS (e0);,<not logged>
+NOTICE:  AUDIT: SESSION,14,1,DDL,CREATE INDEX,INDEX,graph_00.e01_id_idx,CREATE ELABEL e01 INHERITS (e0);,<not logged>
+NOTICE:  AUDIT: SESSION,14,1,DDL,CREATE INDEX,INDEX,graph_00.e01_start_idx,CREATE ELABEL e01 INHERITS (e0);,<not logged>
+NOTICE:  AUDIT: SESSION,14,1,DDL,CREATE INDEX,INDEX,graph_00.e01_end_idx,CREATE ELABEL e01 INHERITS (e0);,<not logged>
+NOTICE:  AUDIT: SESSION,14,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.e01_id_seq,CREATE ELABEL e01 INHERITS (e0);,<not logged>
+NOTICE:  AUDIT: SESSION,14,1,DDL,COMMENT,TABLE,graph_00.e01,CREATE ELABEL e01 INHERITS (e0);,<not logged>
+-- CREATE UNLOGGED
+CREATE UNLOGGED VLABEL unlog;
+NOTICE:  AUDIT: SESSION,15,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.unlog_id_seq,CREATE UNLOGGED VLABEL unlog;,<not logged>
+NOTICE:  AUDIT: SESSION,15,1,DDL,CREATE TABLE,TABLE,graph_00.unlog,CREATE UNLOGGED VLABEL unlog;,<not logged>
+NOTICE:  AUDIT: SESSION,15,1,DDL,CREATE INDEX,INDEX,graph_00.unlog_pkey,CREATE UNLOGGED VLABEL unlog;,<not logged>
+NOTICE:  AUDIT: SESSION,15,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.unlog_id_seq,CREATE UNLOGGED VLABEL unlog;,<not logged>
+NOTICE:  AUDIT: SESSION,15,1,DDL,COMMENT,TABLE,graph_00.unlog,CREATE UNLOGGED VLABEL unlog;,<not logged>
+-- WITH
+CREATE VLABEL stor
+WITH (fillfactor=90, autovacuum_enabled, autovacuum_vacuum_threshold=100);
+NOTICE:  AUDIT: SESSION,16,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.stor_id_seq,"CREATE VLABEL stor
+WITH (fillfactor=90, autovacuum_enabled, autovacuum_vacuum_threshold=100);",<not logged>
+NOTICE:  AUDIT: SESSION,16,1,DDL,CREATE TABLE,TABLE,graph_00.stor,"CREATE VLABEL stor
+WITH (fillfactor=90, autovacuum_enabled, autovacuum_vacuum_threshold=100);",<not logged>
+NOTICE:  AUDIT: SESSION,16,1,DDL,CREATE INDEX,INDEX,graph_00.stor_pkey,"CREATE VLABEL stor
+WITH (fillfactor=90, autovacuum_enabled, autovacuum_vacuum_threshold=100);",<not logged>
+NOTICE:  AUDIT: SESSION,16,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.stor_id_seq,"CREATE VLABEL stor
+WITH (fillfactor=90, autovacuum_enabled, autovacuum_vacuum_threshold=100);",<not logged>
+NOTICE:  AUDIT: SESSION,16,1,DDL,COMMENT,TABLE,graph_00.stor,"CREATE VLABEL stor
+WITH (fillfactor=90, autovacuum_enabled, autovacuum_vacuum_threshold=100);",<not logged>
+-- TABLESPACE
+CREATE VLABEL tblspc TABLESPACE pg_default;
+NOTICE:  AUDIT: SESSION,17,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.tblspc_id_seq,CREATE VLABEL tblspc TABLESPACE pg_default;,<not logged>
+NOTICE:  AUDIT: SESSION,17,1,DDL,CREATE TABLE,TABLE,graph_00.tblspc,CREATE VLABEL tblspc TABLESPACE pg_default;,<not logged>
+NOTICE:  AUDIT: SESSION,17,1,DDL,CREATE INDEX,INDEX,graph_00.tblspc_pkey,CREATE VLABEL tblspc TABLESPACE pg_default;,<not logged>
+NOTICE:  AUDIT: SESSION,17,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.tblspc_id_seq,CREATE VLABEL tblspc TABLESPACE pg_default;,<not logged>
+NOTICE:  AUDIT: SESSION,17,1,DDL,COMMENT,TABLE,graph_00.tblspc,CREATE VLABEL tblspc TABLESPACE pg_default;,<not logged>
+-- DISABLE INDEX
+CREATE VLABEL vdi DISABLE INDEX;
+NOTICE:  AUDIT: SESSION,18,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.vdi_id_seq,CREATE VLABEL vdi DISABLE INDEX;,<not logged>
+NOTICE:  AUDIT: SESSION,18,1,DDL,CREATE TABLE,TABLE,graph_00.vdi,CREATE VLABEL vdi DISABLE INDEX;,<not logged>
+NOTICE:  AUDIT: SESSION,18,1,DDL,CREATE INDEX,INDEX,graph_00.vdi_pkey,CREATE VLABEL vdi DISABLE INDEX;,<not logged>
+NOTICE:  AUDIT: SESSION,18,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.vdi_id_seq,CREATE VLABEL vdi DISABLE INDEX;,<not logged>
+NOTICE:  AUDIT: SESSION,18,1,DDL,COMMENT,TABLE,graph_00.vdi,CREATE VLABEL vdi DISABLE INDEX;,<not logged>
+-- REINDEX
+REINDEX VLABEL vdi;
+NOTICE:  AUDIT: SESSION,19,1,MISC,REINDEX,,,REINDEX VLABEL vdi;,<not logged>
+--
+-- COMMENT and \dG commands
+--
+COMMENT ON GRAPH graph_00 IS 'a graph for regression tests';
+NOTICE:  AUDIT: SESSION,20,1,DDL,COMMENT,,,COMMENT ON GRAPH graph_00 IS 'a graph for regression tests';,<not logged>
+COMMENT ON VLABEL v0 IS 'multiple inheritance test';
+NOTICE:  AUDIT: SESSION,21,1,DDL,COMMENT,,,COMMENT ON VLABEL v0 IS 'multiple inheritance test';,<not logged>
+--
+-- ALTER LABEL
+--
+ALTER VLABEL v0 SET STORAGE external;
+NOTICE:  AUDIT: SESSION,22,1,DDL,ALTER VLABEL,TABLE,graph_00.v0,ALTER VLABEL v0 SET STORAGE external;,<not logged>
+ALTER VLABEL v0 RENAME TO vv;
+NOTICE:  AUDIT: SESSION,23,1,DDL,ALTER VLABEL,,,ALTER VLABEL v0 RENAME TO vv;,<not logged>
+-- IF EXISTS
+ALTER VLABEL IF EXISTS vv SET LOGGED;
+NOTICE:  AUDIT: SESSION,24,1,DDL,ALTER VLABEL,TABLE,graph_00.vv,ALTER VLABEL IF EXISTS vv SET LOGGED;,<not logged>
+--
+-- DROP LABEL
+--
+-- drop all
+DROP VLABEL vv CASCADE;
+NOTICE:  AUDIT: SESSION,25,1,WRITE,DELETE,,,"DELETE FROM ONLY graph_00.ag_edge WHERE (start >= graphid(3,0) AND start <= graphid(3,281474976710655)) OR (""end"" >= graphid(3,0) AND ""end"" <= graphid(3,281474976710655))",<not logged>
+NOTICE:  AUDIT: SESSION,25,2,WRITE,DELETE,,,"DELETE FROM ONLY graph_00.ag_edge WHERE (start >= graphid(3,0) AND start <= graphid(3,281474976710655)) OR (""end"" >= graphid(3,0) AND ""end"" <= graphid(3,281474976710655))",<not logged>
+NOTICE:  AUDIT: SESSION,25,3,WRITE,DELETE,,,"DELETE FROM ONLY graph_00.e0 WHERE (start >= graphid(3,0) AND start <= graphid(3,281474976710655)) OR (""end"" >= graphid(3,0) AND ""end"" <= graphid(3,281474976710655))",<not logged>
+NOTICE:  AUDIT: SESSION,25,4,WRITE,DELETE,,,"DELETE FROM ONLY graph_00.e01 WHERE (start >= graphid(3,0) AND start <= graphid(3,281474976710655)) OR (""end"" >= graphid(3,0) AND ""end"" <= graphid(3,281474976710655))",<not logged>
+NOTICE:  drop cascades to vlabel v00
+NOTICE:  AUDIT: SESSION,25,5,DDL,DROP VLABEL,,,DROP VLABEL vv CASCADE;,<not logged>
+DROP ELABEL e0 CASCADE;
+NOTICE:  drop cascades to elabel e01
+NOTICE:  AUDIT: SESSION,26,1,DDL,DROP ELABEL,,,DROP ELABEL e0 CASCADE;,<not logged>
+--
+-- CONSTRAINT
+--
+-- simple unique constraint
+CREATE VLABEL regv1;
+NOTICE:  AUDIT: SESSION,27,1,DDL,CREATE SEQUENCE,SEQUENCE,graph_00.regv1_id_seq,CREATE VLABEL regv1;,<not logged>
+NOTICE:  AUDIT: SESSION,27,1,DDL,CREATE TABLE,TABLE,graph_00.regv1,CREATE VLABEL regv1;,<not logged>
+NOTICE:  AUDIT: SESSION,27,1,DDL,CREATE INDEX,INDEX,graph_00.regv1_pkey,CREATE VLABEL regv1;,<not logged>
+NOTICE:  AUDIT: SESSION,27,1,DDL,ALTER SEQUENCE,SEQUENCE,graph_00.regv1_id_seq,CREATE VLABEL regv1;,<not logged>
+NOTICE:  AUDIT: SESSION,27,1,DDL,COMMENT,TABLE,graph_00.regv1,CREATE VLABEL regv1;,<not logged>
+CREATE CONSTRAINT ON regv1 ASSERT a.b IS UNIQUE;
+NOTICE:  AUDIT: SESSION,28,1,DDL,ALTER VLABEL,TABLE,graph_00.regv1,CREATE CONSTRAINT ON regv1 ASSERT a.b IS UNIQUE;,<not logged>
+--
+-- DROP GRAPH
+--
+DROP GRAPH graph_00 CASCADE;
+NOTICE:  drop cascades to 8 other objects
+NOTICE:  AUDIT: SESSION,29,1,DDL,DROP GRAPH,,,DROP GRAPH graph_00 CASCADE;,<not logged>
+DROP ROLE temp;
+NOTICE:  AUDIT: SESSION,30,1,ROLE,DROP ROLE,,,DROP ROLE temp;,<not logged>
+DROP ROLE graph_role_0;
+ERROR:  current user cannot be dropped
+--
+-- Cypher Query Language - DML
+--
+-- prepare
+CREATE TABLE history (year, event) AS VALUES
+(1996, 'PostgreSQL'),
+(2016, 'Graph');
+NOTICE:  AUDIT: SESSION,31,1,READ,SELECT,,,"CREATE TABLE history (year, event) AS VALUES
+(1996, 'PostgreSQL'),
+(2016, 'Graph');",<not logged>
+NOTICE:  AUDIT: SESSION,31,2,DDL,CREATE TABLE AS,TABLE,public.history,"CREATE TABLE history (year, event) AS VALUES
+(1996, 'PostgreSQL'),
+(2016, 'Graph');",<not logged>
+CREATE GRAPH agens;
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE SCHEMA,SCHEMA,agens,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE SEQUENCE,SEQUENCE,agens.ag_label_seq,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE SEQUENCE,SEQUENCE,agens.ag_vertex_id_seq,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE TABLE,TABLE,agens.ag_vertex,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE INDEX,INDEX,agens.ag_vertex_pkey,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,ALTER SEQUENCE,SEQUENCE,agens.ag_vertex_id_seq,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,COMMENT,TABLE,agens.ag_vertex,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE SEQUENCE,SEQUENCE,agens.ag_edge_id_seq,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE TABLE,TABLE,agens.ag_edge,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE INDEX,INDEX,agens.ag_edge_id_idx,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE INDEX,INDEX,agens.ag_edge_start_idx,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,CREATE INDEX,INDEX,agens.ag_edge_end_idx,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,ALTER SEQUENCE,SEQUENCE,agens.ag_edge_id_seq,CREATE GRAPH agens;,<not logged>
+NOTICE:  AUDIT: SESSION,32,1,DDL,COMMENT,TABLE,agens.ag_edge,CREATE GRAPH agens;,<not logged>
+--
+-- RETURN
+--
+RETURN 3 + 4, 'hello' + ' agens';
+NOTICE:  AUDIT: SESSION,33,1,READ,SELECT,,,"RETURN 3 + 4, 'hello' + ' agens';",<not logged>
+ ?column? |   ?column?    
+----------+---------------
+ 7        | "hello agens"
+(1 row)
+
+RETURN (SELECT event FROM history WHERE year = 2016);
+NOTICE:  AUDIT: SESSION,34,1,READ,SELECT,,,RETURN (SELECT event FROM history WHERE year = 2016);,<not logged>
+  event  
+---------
+ "Graph"
+(1 row)
+
+SELECT * FROM (RETURN 3 + 4, 'hello' + ' agens') AS _(lucky, greeting);
+NOTICE:  AUDIT: SESSION,35,1,READ,SELECT,,,"SELECT * FROM (RETURN 3 + 4, 'hello' + ' agens') AS _(lucky, greeting);",<not logged>
+ lucky |   greeting    
+-------+---------------
+ 7     | "hello agens"
+(1 row)
+
+--
+-- MATCH
+--
+CREATE (:vl1 {id:1});
+NOTICE:  AUDIT: SESSION,36,1,DDL,CREATE SEQUENCE,SEQUENCE,agens.vl1_id_seq,"CREATE VLABEL ""vl1""",<not logged>
+NOTICE:  AUDIT: SESSION,36,1,DDL,CREATE TABLE,TABLE,agens.vl1,"CREATE VLABEL ""vl1""",<not logged>
+NOTICE:  AUDIT: SESSION,36,1,DDL,CREATE INDEX,INDEX,agens.vl1_pkey,"CREATE VLABEL ""vl1""",<not logged>
+NOTICE:  AUDIT: SESSION,36,1,DDL,ALTER SEQUENCE,SEQUENCE,agens.vl1_id_seq,"CREATE VLABEL ""vl1""",<not logged>
+NOTICE:  AUDIT: SESSION,36,1,DDL,COMMENT,TABLE,agens.vl1,"CREATE VLABEL ""vl1""",<not logged>
+NOTICE:  AUDIT: SESSION,37,1,MISC,UNKNOWN,,,CREATE (:vl1 {id:1});,<not logged>
+MATCH (A:vl1) RETURN A;
+NOTICE:  AUDIT: SESSION,38,1,READ,SELECT,,,MATCH (A:vl1) RETURN A;,<not logged>
+         a         
+-------------------
+ vl1[3.1]{"id": 1}
+(1 row)
+
+OPTIONAL MATCH (A:vl1) RETURN A;
+NOTICE:  AUDIT: SESSION,39,1,READ,SELECT,,,OPTIONAL MATCH (A:vl1) RETURN A;,<not logged>
+         a         
+-------------------
+ vl1[3.1]{"id": 1}
+(1 row)
+
+MATCH (A:vl1) DETACH DELETE A;
+NOTICE:  AUDIT: SESSION,40,1,MISC,UNKNOWN,,,MATCH (A:vl1) DETACH DELETE A;,<not logged>
+-- Variable Length Relationship
+CREATE (:time {sec: 1})-[:goes]->(:time {sec: 2})-[:goes]->(:time {sec: 3})-[:goes]->(:time {sec: 4})-[:goes]->(:time {sec: 5});
+NOTICE:  AUDIT: SESSION,41,1,DDL,CREATE SEQUENCE,SEQUENCE,agens.time_id_seq,"CREATE VLABEL ""time""",<not logged>
+NOTICE:  AUDIT: SESSION,41,1,DDL,CREATE TABLE,TABLE,"agens.""time""","CREATE VLABEL ""time""",<not logged>
+NOTICE:  AUDIT: SESSION,41,1,DDL,CREATE INDEX,INDEX,agens.time_pkey,"CREATE VLABEL ""time""",<not logged>
+NOTICE:  AUDIT: SESSION,41,1,DDL,ALTER SEQUENCE,SEQUENCE,agens.time_id_seq,"CREATE VLABEL ""time""",<not logged>
+NOTICE:  AUDIT: SESSION,41,1,DDL,COMMENT,TABLE,"agens.""time""","CREATE VLABEL ""time""",<not logged>
+NOTICE:  AUDIT: SESSION,42,1,DDL,CREATE SEQUENCE,SEQUENCE,agens.goes_id_seq,"CREATE ELABEL ""goes""",<not logged>
+NOTICE:  AUDIT: SESSION,42,1,DDL,CREATE TABLE,TABLE,agens.goes,"CREATE ELABEL ""goes""",<not logged>
+NOTICE:  AUDIT: SESSION,42,1,DDL,CREATE INDEX,INDEX,agens.goes_id_idx,"CREATE ELABEL ""goes""",<not logged>
+NOTICE:  AUDIT: SESSION,42,1,DDL,CREATE INDEX,INDEX,agens.goes_start_idx,"CREATE ELABEL ""goes""",<not logged>
+NOTICE:  AUDIT: SESSION,42,1,DDL,CREATE INDEX,INDEX,agens.goes_end_idx,"CREATE ELABEL ""goes""",<not logged>
+NOTICE:  AUDIT: SESSION,42,1,DDL,ALTER SEQUENCE,SEQUENCE,agens.goes_id_seq,"CREATE ELABEL ""goes""",<not logged>
+NOTICE:  AUDIT: SESSION,42,1,DDL,COMMENT,TABLE,agens.goes,"CREATE ELABEL ""goes""",<not logged>
+NOTICE:  AUDIT: SESSION,43,1,MISC,UNKNOWN,,,CREATE (:time {sec: 1})-[:goes]->(:time {sec: 2})-[:goes]->(:time {sec: 3})-[:goes]->(:time {sec: 4})-[:goes]->(:time {sec: 5});,<not logged>
+MATCH (a:time)-[x:goes*3]->(b:time) RETURN a.sec AS a, length(x) AS x, b.sec AS b ORDER BY a;
+NOTICE:  AUDIT: SESSION,44,1,READ,SELECT,,,"MATCH (a:time)-[x:goes*3]->(b:time) RETURN a.sec AS a, length(x) AS x, b.sec AS b ORDER BY a;",<not logged>
+ a | x | b 
+---+---+---
+ 1 | 3 | 4
+ 2 | 3 | 5
+(2 rows)
+
+--
+-- DISTINCT
+--
+MATCH (a:time)-[]-() RETURN DISTINCT a.sec AS a ORDER BY a;
+NOTICE:  AUDIT: SESSION,45,1,READ,SELECT,,,MATCH (a:time)-[]-() RETURN DISTINCT a.sec AS a ORDER BY a;,<not logged>
+ a 
+---
+ 1
+ 2
+ 3
+ 4
+ 5
+(5 rows)
+
+--
+-- SKIP and LIMIT
+--
+MATCH (a:time) RETURN a.sec AS a ORDER BY a SKIP 1 LIMIT 1;
+NOTICE:  AUDIT: SESSION,46,1,READ,SELECT,,,MATCH (a:time) RETURN a.sec AS a ORDER BY a SKIP 1 LIMIT 1;,<not logged>
+ a 
+---
+ 2
+(1 row)
+
+--
+-- UNION
+--
+MATCH (a) RETURN a UNION MATCH (b) RETURN *;
+NOTICE:  AUDIT: SESSION,47,1,READ,SELECT,,,MATCH (a) RETURN a UNION MATCH (b) RETURN *;,<not logged>
+          a          
+---------------------
+ time[4.1]{"sec": 1}
+ time[4.2]{"sec": 2}
+ time[4.3]{"sec": 3}
+ time[4.4]{"sec": 4}
+ time[4.5]{"sec": 5}
+(5 rows)
+
+--
+-- aggregates
+--
+MATCH (a) RETURN count(a);
+NOTICE:  AUDIT: SESSION,48,1,READ,SELECT,,,MATCH (a) RETURN count(a);,<not logged>
+ count 
+-------
+ 5
+(1 row)
+
+--
+-- EXISTS
+--
+MATCH (a) WHERE exists((a)-[]->()) RETURN a.sec AS a;
+NOTICE:  AUDIT: SESSION,49,1,READ,SELECT,,,MATCH (a) WHERE exists((a)-[]->()) RETURN a.sec AS a;,<not logged>
+ a 
+---
+ 1
+ 2
+ 3
+ 4
+(4 rows)
+
+--
+-- MERGE
+--
+MERGE (a);
+NOTICE:  AUDIT: SESSION,50,1,MISC,UNKNOWN,,,MERGE (a);,<not logged>
+--
+-- Cypher Query Language - User Defined Function
+--
+-- setup
+CREATE (:v {id: 1, refs: [2, 3, 4]}), (:v {id: 2});
+NOTICE:  AUDIT: SESSION,51,1,DDL,CREATE SEQUENCE,SEQUENCE,agens.v_id_seq,"CREATE VLABEL ""v""",<not logged>
+NOTICE:  AUDIT: SESSION,51,1,DDL,CREATE TABLE,TABLE,agens.v,"CREATE VLABEL ""v""",<not logged>
+NOTICE:  AUDIT: SESSION,51,1,DDL,CREATE INDEX,INDEX,agens.v_pkey,"CREATE VLABEL ""v""",<not logged>
+NOTICE:  AUDIT: SESSION,51,1,DDL,ALTER SEQUENCE,SEQUENCE,agens.v_id_seq,"CREATE VLABEL ""v""",<not logged>
+NOTICE:  AUDIT: SESSION,51,1,DDL,COMMENT,TABLE,agens.v,"CREATE VLABEL ""v""",<not logged>
+NOTICE:  AUDIT: SESSION,52,1,MISC,UNKNOWN,,,"CREATE (:v {id: 1, refs: [2, 3, 4]}), (:v {id: 2});",<not logged>
+-- CREATE FUNCTION
+CREATE FUNCTION udf_var(id jsonb) RETURNS jsonb AS $$
+DECLARE
+  i jsonb;
+  p jsonb;
+BEGIN
+  i := id;
+  MATCH (n:v) WHERE n.id = i RETURN properties(n) INTO p;
+  RETURN p;
+END;
+$$ LANGUAGE plpgsql;
+NOTICE:  AUDIT: SESSION,53,1,DDL,CREATE FUNCTION,FUNCTION,public.udf_var(pg_catalog.jsonb),"CREATE FUNCTION udf_var(id jsonb) RETURNS jsonb AS $$
+DECLARE
+  i jsonb;
+  p jsonb;
+BEGIN
+  i := id;
+  MATCH (n:v) WHERE n.id = i RETURN properties(n) INTO p;
+  RETURN p;
+END;
+$$ LANGUAGE plpgsql;",<not logged>
+-- CALL FUNCTION
+RETURN udf_var(2);
+NOTICE:  AUDIT: SESSION,54,1,READ,SELECT,,,RETURN udf_var(2);,<not logged>
+NOTICE:  AUDIT: SESSION,54,2,FUNCTION,EXECUTE,FUNCTION,public.udf_var,RETURN udf_var(2);,<not logged>
+NOTICE:  AUDIT: SESSION,54,3,READ,SELECT,,,MATCH (n:v) WHERE n.id = i RETURN properties(n),<not logged>
+  udf_var  
+-----------
+ {"id": 2}
+(1 row)
+
+-- DROP FUNCTION
+DROP FUNCTION udf_var(jsonb);
+NOTICE:  AUDIT: SESSION,55,1,DDL,DROP FUNCTION,FUNCTION,public.udf_var(pg_catalog.jsonb),DROP FUNCTION udf_var(jsonb);,<not logged>
+--
+-- Cypher Query Language - Shortestpath
+--
+MATCH shortestpath((p)-[:goes]->(f)) RETURN *;
+NOTICE:  AUDIT: SESSION,56,1,READ,SELECT,,,MATCH shortestpath((p)-[:goes]->(f)) RETURN *;,<not logged>
+          p          |          f          
+---------------------+---------------------
+ time[4.1]{"sec": 1} | time[4.2]{"sec": 2}
+ time[4.2]{"sec": 2} | time[4.3]{"sec": 3}
+ time[4.3]{"sec": 3} | time[4.4]{"sec": 4}
+ time[4.4]{"sec": 4} | time[4.5]{"sec": 5}
+(4 rows)
+
+--
+-- DROP
+--
+DROP GRAPH agens CASCADE;
+NOTICE:  drop cascades to 7 other objects
+NOTICE:  AUDIT: SESSION,57,1,DDL,DROP GRAPH,,,DROP GRAPH agens CASCADE;,<not logged>
+DROP TABLE history;
+NOTICE:  AUDIT: SESSION,58,1,DDL,DROP TABLE,TABLE,public.history,DROP TABLE history;,<not logged>

@@ -1,0 +1,45 @@
+--- pg_hint_plan-REL10_1_3_3/make_join_rel.c	2019-01-17 16:40:44.000000000 +0900
++++ pg_hint_plan/make_join_rel.c	2019-06-26 14:22:32.328218296 +0900
+@@ -372,6 +372,42 @@
+ 								 JOIN_ANTI, sjinfo,
+ 								 restrictlist);
+ 			break;
++		case JOIN_CYPHER_MERGE:
++			if (is_dummy_rel(rel1) ||
++				restriction_is_constant_false(restrictlist, joinrel, true))
++			{
++				mark_dummy_rel(joinrel);
++				break;
++			}
++			if (restriction_is_constant_false(restrictlist, joinrel, false) &&
++				bms_is_subset(rel2->relids, sjinfo->syn_righthand))
++				mark_dummy_rel(rel2);
++			add_paths_for_cmerge(root, joinrel, rel1, rel2,
++								 sjinfo, restrictlist);
++			break;
++		case JOIN_VLE:
++			if (is_dummy_rel(rel1) || is_dummy_rel(rel2) ||
++				restriction_is_constant_false(restrictlist, joinrel, false))
++			{
++				mark_dummy_rel(joinrel);
++				break;
++			}
++			add_paths_to_joinrel_for_vle(root, joinrel, rel1, rel2,
++										 sjinfo, restrictlist);
++			break;
++		case JOIN_CYPHER_DELETE:
++			if (is_dummy_rel(rel1) ||
++				restriction_is_constant_false(restrictlist, joinrel, true))
++			{
++				mark_dummy_rel(joinrel);
++				break;
++			}
++			if (restriction_is_constant_false(restrictlist, joinrel, false) &&
++				bms_is_subset(rel2->relids, sjinfo->syn_righthand))
++				mark_dummy_rel(rel2);
++			add_paths_for_cdelete(root, joinrel, rel1, rel2, sjinfo->jointype,
++								  sjinfo, restrictlist);
++			break;
+ 		default:
+ 			/* other values not expected here */
+ 			elog(ERROR, "unrecognized join type: %d", (int) sjinfo->jointype);

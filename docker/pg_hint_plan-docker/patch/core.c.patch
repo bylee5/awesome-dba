@@ -1,0 +1,55 @@
+--- pg_hint_plan-REL10_1_3_3/core.c	2019-01-17 16:40:44.000000000 +0900
++++ pg_hint_plan/core.c	2019-06-26 14:13:29.100677674 +0900
+@@ -79,7 +79,8 @@
+ 	create_index_paths(root, rel);
+ 
+ 	/* Consider TID scans */
+-	create_tidscan_paths(root, rel);
++	if (!root->hasVLEJoinRTE)
++		create_tidscan_paths(root, rel);
+ }
+ 
+ 
+@@ -1014,6 +1015,28 @@
+ 	}
+ }
+ 
++/* This function is used only by the join_is_legal function. */
++static bool
++is_graph_join_rel(RelOptInfo *rel)
++{
++	NestPath   *nlpath;
++
++	if (!(IS_JOIN_REL(rel)))
++		return false;
++
++	/* All of graph join is only used nestloop. */
++	if (!IsA(rel->cheapest_total_path, NestPath))
++		return false;
++	else
++	{
++		nlpath = castNode(NestPath, rel->cheapest_total_path);
++
++		if(IS_GRAPH_JOIN(nlpath->jointype))
++			return true;
++	}
++
++	return false;
++}
+ 
+ /*
+  * join_is_legal
+@@ -1041,6 +1064,13 @@
+ 	ListCell   *l;
+ 
+ 	/*
++	 * Because graph joins must not change the join order, prevent to be
++	 * a sub-tree of another join.
++	 */
++	if (is_graph_join_rel(rel1) || is_graph_join_rel(rel2))
++		return false;
++
++	/*
+ 	 * Ensure output params are set on failure return.  This is just to
+ 	 * suppress uninitialized-variable warnings from overly anal compilers.
+ 	 */

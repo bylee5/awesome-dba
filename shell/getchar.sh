@@ -18,7 +18,7 @@ echo
 
 # 입력된 문자에 따라 처리 분기
 case "$char" in
-  [y/n])
+  [yY])
     echo "Input: YES"
     ;;
   [nN])

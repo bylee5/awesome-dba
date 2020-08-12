@@ -9,6 +9,6 @@ echo "Address if $fqdn"
 echo "======="
 
 # host 명령어로 IP 주소 얻기, awk 가공해서 출력
-host $fqdn } \
+host $fqdn | \
 awk '/has address/ {print $NF, "IPv4"} \
 /has IPv6 address/ {print $NF, "IPv6"}'

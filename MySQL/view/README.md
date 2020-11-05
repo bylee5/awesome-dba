@@ -1,0 +1,1 @@
+https://github.com/mysql/mysql-server/blob/91a17cedb1ee880fe7915fb14cfd74c04e8d6588/scripts/sys_schema/views/
